@@ -1,0 +1,31 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: holmesgpt-runbook-mcp
+  title: HolmesGPT Runbook MCP Server
+  description: MCP server for HolmesGPT — runbook search, gap detection, drafting, and root cause analysis via Claude and Confluence
+  annotations:
+    github.com/project-slug: polarpoint-io/holmesgpt-runbook-mcp
+    backstage.io/techdocs-ref: dir:.
+  tags:
+    - mcp
+    - holmesgpt
+    - platform-engineering
+    - sre
+    - runbooks
+  links:
+    - url: https://github.com/polarpoint-io/holmesgpt-runbook-mcp
+      title: GitHub
+    - url: https://github.com/polarpoint-io/holmesgpt-runbook-mcp/blob/main/README.md
+      title: Docs
+spec:
+  type: service
+  lifecycle: alpha
+  owner: platform-team
+  system: holmesgpt
+  providesApis:
+    - holmesgpt-runbook-mcp-api
+  dependsOn:
+    - resource:confluence
+    - resource:github
+    - resource:anthropic-api

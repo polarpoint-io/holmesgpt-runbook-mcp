@@ -1,0 +1,95 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: holmesgpt-runbook-mcp
+  namespace: platform-tools
+  labels:
+    app: holmesgpt-runbook-mcp
+    app.kubernetes.io/name: holmesgpt-runbook-mcp
+    app.kubernetes.io/part-of: holmesgpt
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: holmesgpt-runbook-mcp
+  template:
+    metadata:
+      labels:
+        app: holmesgpt-runbook-mcp
+      annotations:
+        prometheus.io/scrape: "false"
+    spec:
+      serviceAccountName: holmesgpt-runbook-mcp
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        fsGroup: 1000
+      containers:
+        - name: mcp-server
+          image: ghcr.io/polarpoint-io/holmesgpt-runbook-mcp:latest
+          ports:
+            - containerPort: 8080
+              name: http
+          env:
+            - name: ANTHROPIC_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: holmesgpt-runbook-mcp-secrets
+                  key: anthropic-api-key
+            - name: CONFLUENCE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: holmesgpt-runbook-mcp-secrets
+                  key: confluence-url
+            - name: CONFLUENCE_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: holmesgpt-runbook-mcp-secrets
+                  key: confluence-username
+            - name: CONFLUENCE_API_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: holmesgpt-runbook-mcp-secrets
+                  key: confluence-api-token
+            - name: GITHUB_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: holmesgpt-runbook-mcp-secrets
+                  key: github-token
+            - name: CONFLUENCE_RUNBOOK_SPACE
+              value: "RUNBOOKS"
+            - name: GITHUB_RUNBOOK_REPO
+              value: "polarpoint-io/markdown-pol-docs"
+            - name: GITHUB_BASE_BRANCH
+              value: "main"
+          resources:
+            requests:
+              cpu: 100m
+              memory: 256Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+            initialDelaySeconds: 15
+            periodSeconds: 30
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop: ["ALL"]
+      restartPolicy: Always
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: holmesgpt-runbook-mcp
+  namespace: platform-tools
