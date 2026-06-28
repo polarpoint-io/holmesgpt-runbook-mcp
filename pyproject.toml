@@ -21,14 +21,37 @@ classifiers = [
 
 dependencies = [
     "mcp[cli]>=1.0.0",
-    "anthropic>=0.40.0",
     "atlassian-python-api>=3.41.0",
-    "PyGithub>=2.1.0",
     "pydantic>=2.0.0",
     "httpx>=0.27.0",
 ]
 
 [project.optional-dependencies]
+# LLM providers — install at least one
+anthropic = ["anthropic>=0.40.0"]
+openai    = ["openai>=1.30.0"]
+
+# Git providers — install at least one
+github       = ["PyGithub>=2.1.0"]
+gitlab       = ["python-gitlab>=4.0.0"]
+azure-devops = ["azure-devops>=7.1.0", "msrest>=0.7.0"]
+
+# Convenience bundles
+anthropic-github       = ["anthropic>=0.40.0", "PyGithub>=2.1.0"]
+openai-github          = ["openai>=1.30.0", "PyGithub>=2.1.0"]
+anthropic-gitlab       = ["anthropic>=0.40.0", "python-gitlab>=4.0.0"]
+openai-gitlab          = ["openai>=1.30.0", "python-gitlab>=4.0.0"]
+anthropic-azure-devops = ["anthropic>=0.40.0", "azure-devops>=7.1.0", "msrest>=0.7.0"]
+openai-azure-devops    = ["openai>=1.30.0", "azure-devops>=7.1.0", "msrest>=0.7.0"]
+all = [
+    "anthropic>=0.40.0",
+    "openai>=1.30.0",
+    "PyGithub>=2.1.0",
+    "python-gitlab>=4.0.0",
+    "azure-devops>=7.1.0",
+    "msrest>=0.7.0",
+]
+
 dev = [
     "pytest>=8.0.0",
     "pytest-asyncio>=0.23.0",
@@ -37,6 +60,13 @@ dev = [
     "ruff>=0.4.0",
     "black>=24.0.0",
     "pre-commit>=3.7.0",
+    # Include all providers for local dev
+    "anthropic>=0.40.0",
+    "openai>=1.30.0",
+    "PyGithub>=2.1.0",
+    "python-gitlab>=4.0.0",
+    "azure-devops>=7.1.0",
+    "msrest>=0.7.0",
 ]
 
 [project.scripts]

@@ -31,11 +31,64 @@ spec:
             - containerPort: 8080
               name: http
           env:
-            - name: ANTHROPIC_API_KEY
+            # ── LLM provider ────────────────────────────────────────────────
+            # anthropic | openai | azure | openai-compatible
+            - name: LLM_PROVIDER
+              value: "anthropic"
+
+            # Generic API key — works for Anthropic, OpenAI, Azure
+            - name: LLM_API_KEY
               valueFrom:
                 secretKeyRef:
                   name: holmesgpt-runbook-mcp-secrets
-                  key: anthropic-api-key
+                  key: llm-api-key
+
+            # Model overrides (optional — defaults are set per provider)
+            # - name: LLM_FAST_MODEL
+            #   value: "claude-haiku-4-5-20251001"
+            # - name: LLM_CAPABLE_MODEL
+            #   value: "claude-sonnet-4-6"
+
+            # Azure OpenAI only:
+            # - name: LLM_BASE_URL
+            #   value: "https://<resource>.openai.azure.com/"
+            # - name: LLM_AZURE_API_VERSION
+            #   value: "2024-02-01"
+
+            # OpenAI-compatible (Ollama, vLLM, Together, etc.):
+            # - name: LLM_BASE_URL
+            #   value: "http://ollama.platform-tools.svc.cluster.local:11434/v1"
+            # - name: LLM_FAST_MODEL
+            #   value: "llama3"
+            # - name: LLM_CAPABLE_MODEL
+            #   value: "llama3:70b"
+
+            # ── Git provider ─────────────────────────────────────────────────
+            # github | gitlab | azure-devops
+            - name: GIT_PROVIDER
+              value: "github"
+
+            - name: GIT_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: holmesgpt-runbook-mcp-secrets
+                  key: git-token
+
+            - name: GIT_RUNBOOK_REPO
+              value: "polarpoint-io/markdown-pol-docs"
+
+            - name: GIT_BASE_BRANCH
+              value: "main"
+
+            # GitHub Enterprise / GitLab self-hosted / Azure DevOps org URL:
+            # - name: GIT_HOST
+            #   value: "https://dev.azure.com/my-org"
+
+            # Azure DevOps: GIT_RUNBOOK_REPO format is 'ProjectName/RepoName'
+            # - name: GIT_RUNBOOK_REPO
+            #   value: "PlatformDocs/runbooks"
+
+            # ── Confluence ───────────────────────────────────────────────────
             - name: CONFLUENCE_URL
               valueFrom:
                 secretKeyRef:
@@ -51,17 +104,13 @@ spec:
                 secretKeyRef:
                   name: holmesgpt-runbook-mcp-secrets
                   key: confluence-api-token
-            - name: GITHUB_TOKEN
-              valueFrom:
-                secretKeyRef:
-                  name: holmesgpt-runbook-mcp-secrets
-                  key: github-token
             - name: CONFLUENCE_RUNBOOK_SPACE
               value: "RUNBOOKS"
-            - name: GITHUB_RUNBOOK_REPO
-              value: "polarpoint-io/markdown-pol-docs"
-            - name: GITHUB_BASE_BRANCH
-              value: "main"
+
+            # ── Runbook path ─────────────────────────────────────────────────
+            - name: RUNBOOK_PATH_PREFIX
+              value: "docs/technical-practices/monitoring-observability/runbooks"
+
           resources:
             requests:
               cpu: 100m

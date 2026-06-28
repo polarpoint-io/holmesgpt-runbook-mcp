@@ -1,0 +1,248 @@
+<svg viewBox="0 0 1280 640" xmlns="http://www.w3.org/2000/svg" font-family="ui-monospace, 'Cascadia Code', 'Fira Code', monospace">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0d1117"/>
+      <stop offset="100%" stop-color="#0f1923"/>
+    </linearGradient>
+    <radialGradient id="centreGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#3b82f6" stop-opacity="0.12"/>
+      <stop offset="100%" stop-color="#3b82f6" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="cardGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#161b22"/>
+      <stop offset="100%" stop-color="#0d1117"/>
+    </linearGradient>
+    <linearGradient id="blueCard" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1d3557"/>
+      <stop offset="100%" stop-color="#0f2238"/>
+    </linearGradient>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#ffffff" stroke-opacity="0.025" stroke-width="1"/>
+    </pattern>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#3b82f6" opacity="0.8"/>
+    </marker>
+    <marker id="arrow-green" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#10b981" opacity="0.8"/>
+    </marker>
+    <filter id="shadow" x="-5%" y="-5%" width="110%" height="120%">
+      <feDropShadow dx="0" dy="4" stdDeviation="8" flood-color="#000000" flood-opacity="0.5"/>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1280" height="640" fill="url(#bg)"/>
+  <rect width="1280" height="640" fill="url(#grid)"/>
+  <ellipse cx="640" cy="310" rx="320" ry="200" fill="url(#centreGlow)"/>
+
+  <!-- ─── LEFT: Alert card ─────────────────────────────────────── -->
+  <g filter="url(#shadow)">
+    <rect x="32" y="188" width="204" height="256" rx="10" fill="url(#cardGrad)" stroke="#21262d" stroke-width="1.5"/>
+  </g>
+  <circle cx="134" cy="236" r="20" fill="#1f2937" stroke="#f59e0b" stroke-width="1.5"/>
+  <text x="134" y="243" text-anchor="middle" font-size="16" fill="#f59e0b">⚡</text>
+  <text x="134" y="273" text-anchor="middle" font-size="12" fill="#e6edf3">KubePodOOMKilled</text>
+  <text x="134" y="289" text-anchor="middle" font-size="10" fill="#8b949e">namespace: payments</text>
+  <line x1="52" y1="304" x2="216" y2="304" stroke="#21262d" stroke-width="1"/>
+  <rect x="52" y="314" width="130" height="7" rx="3" fill="#21262d"/>
+  <rect x="52" y="328" width="100" height="7" rx="3" fill="#21262d"/>
+  <rect x="52" y="342" width="118" height="7" rx="3" fill="#21262d"/>
+  <rect x="52" y="356" width="88" height="7" rx="3" fill="#21262d"/>
+  <rect x="52" y="370" width="108" height="7" rx="3" fill="#1a1f27"/>
+  <rect x="52" y="384" width="76" height="7" rx="3" fill="#1a1f27"/>
+  <rect x="52" y="398" width="120" height="7" rx="3" fill="#1a1f27"/>
+  <text x="134" y="462" text-anchor="middle" font-size="10" fill="#6e7681" letter-spacing="0.8">ALERT / LOG</text>
+
+  <line x1="238" y1="316" x2="300" y2="316" stroke="#3b82f6" stroke-width="1.5" stroke-opacity="0.6" marker-end="url(#arrow)" stroke-dasharray="4 3"/>
+
+  <!-- ─── LEFT-CENTRE: HolmesGPT ───────────────────────────────── -->
+  <g filter="url(#shadow)">
+    <rect x="300" y="248" width="148" height="136" rx="10" fill="url(#cardGrad)" stroke="#21262d" stroke-width="1.5"/>
+  </g>
+  <circle cx="374" cy="297" r="24" fill="#111827" stroke="#6366f1" stroke-width="1.5"/>
+  <circle cx="370" cy="293" r="9" fill="none" stroke="#a5b4fc" stroke-width="2"/>
+  <line x1="377" y1="300" x2="384" y2="308" stroke="#a5b4fc" stroke-width="2.5" stroke-linecap="round"/>
+  <text x="374" y="333" text-anchor="middle" font-size="12" fill="#e6edf3">HolmesGPT</text>
+  <text x="374" y="349" text-anchor="middle" font-size="9" fill="#8b949e">AI troubleshooter</text>
+  <text x="374" y="370" text-anchor="middle" font-size="8" fill="#4b5563">robusta-dev/holmesgpt</text>
+
+  <line x1="450" y1="316" x2="500" y2="316" stroke="#3b82f6" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="475" y="308" text-anchor="middle" font-size="9" fill="#3b82f6">MCP</text>
+
+  <!-- ─── CENTRE: MCP server card ──────────────────────────────── -->
+  <g filter="url(#shadow)">
+    <rect x="500" y="88" width="304" height="468" rx="12" fill="url(#blueCard)" stroke="#3b82f6" stroke-width="1.5" stroke-opacity="0.7"/>
+  </g>
+  <!-- Badge -->
+  <rect x="572" y="104" width="160" height="20" rx="10" fill="#1e40af" fill-opacity="0.6"/>
+  <text x="652" y="118" text-anchor="middle" font-size="9" fill="#93c5fd" letter-spacing="1">MCP SERVER · PORT 8080</text>
+  <!-- Title -->
+  <text x="652" y="154" text-anchor="middle" font-size="17" fill="#e6edf3" font-weight="bold">holmesgpt-runbook-mcp</text>
+  <text x="652" y="173" text-anchor="middle" font-size="10" fill="#60a5fa">polarpoint-io / holmesgpt-runbook-mcp</text>
+  <line x1="522" y1="188" x2="782" y2="188" stroke="#2d4a7a" stroke-width="1"/>
+
+  <!-- Tools -->
+  <rect x="520" y="198" width="264" height="38" rx="6" fill="#0d1f38" stroke="#1e3a5f" stroke-width="1"/>
+  <rect x="520" y="198" width="4" height="38" rx="2" fill="#3b82f6"/>
+  <text x="536" y="214" font-size="10" fill="#60a5fa" font-weight="bold">runbook_search</text>
+  <text x="536" y="228" font-size="9" fill="#6e7681">CQL via Confluence Page Properties</text>
+
+  <rect x="520" y="242" width="264" height="38" rx="6" fill="#0d1f38" stroke="#1e3a5f" stroke-width="1"/>
+  <rect x="520" y="242" width="4" height="38" rx="2" fill="#3b82f6"/>
+  <text x="536" y="258" font-size="10" fill="#60a5fa" font-weight="bold">runbook_get</text>
+  <text x="536" y="272" font-size="9" fill="#6e7681">Full content by page ID or title</text>
+
+  <rect x="520" y="286" width="264" height="38" rx="6" fill="#0d1f38" stroke="#1e3a5f" stroke-width="1"/>
+  <rect x="520" y="286" width="4" height="38" rx="2" fill="#8b5cf6"/>
+  <text x="536" y="302" font-size="10" fill="#a78bfa" font-weight="bold">investigation_classify</text>
+  <text x="536" y="316" font-size="9" fill="#6e7681">Fast LLM · runbook gap detection</text>
+
+  <rect x="520" y="330" width="264" height="38" rx="6" fill="#0d1f38" stroke="#1e3a5f" stroke-width="1"/>
+  <rect x="520" y="330" width="4" height="38" rx="2" fill="#10b981"/>
+  <text x="536" y="346" font-size="10" fill="#6ee7b7" font-weight="bold">runbook_draft</text>
+  <text x="536" y="360" font-size="9" fill="#6e7681">Capable LLM · opens draft PR/MR</text>
+
+  <rect x="520" y="374" width="264" height="38" rx="6" fill="#0d1f38" stroke="#1e3a5f" stroke-width="1"/>
+  <rect x="520" y="374" width="4" height="38" rx="2" fill="#f59e0b"/>
+  <text x="536" y="390" font-size="10" fill="#fcd34d" font-weight="bold">root_cause_analyse</text>
+  <text x="536" y="404" font-size="9" fill="#6e7681">Capable LLM · live RCA with runbook KB</text>
+
+  <!-- Provider pills inside centre card -->
+  <text x="652" y="430" text-anchor="middle" font-size="9" fill="#4b5563" letter-spacing="0.5">LLM PROVIDER</text>
+  <!-- Anthropic pill -->
+  <rect x="520" y="436" width="62" height="18" rx="9" fill="#1e1b4b"/>
+  <text x="551" y="448" text-anchor="middle" font-size="8" fill="#a5b4fc">Anthropic</text>
+  <!-- OpenAI pill -->
+  <rect x="588" y="436" width="52" height="18" rx="9" fill="#14532d"/>
+  <text x="614" y="448" text-anchor="middle" font-size="8" fill="#6ee7b7">OpenAI</text>
+  <!-- Azure pill -->
+  <rect x="646" y="436" width="44" height="18" rx="9" fill="#1e3a5f"/>
+  <text x="668" y="448" text-anchor="middle" font-size="8" fill="#93c5fd">Azure</text>
+  <!-- compatible pill -->
+  <rect x="696" y="436" width="88" height="18" rx="9" fill="#292524"/>
+  <text x="740" y="448" text-anchor="middle" font-size="8" fill="#d6d3d1">OAI-compat</text>
+
+  <text x="652" y="470" text-anchor="middle" font-size="9" fill="#4b5563" letter-spacing="0.5">GIT PROVIDER</text>
+  <!-- GitHub -->
+  <rect x="520" y="476" width="58" height="18" rx="9" fill="#161b22" stroke="#238636" stroke-width="1"/>
+  <text x="549" y="488" text-anchor="middle" font-size="8" fill="#3fb950">GitHub</text>
+  <!-- GitLab -->
+  <rect x="584" y="476" width="52" height="18" rx="9" fill="#1a0f00" stroke="#fc6d26" stroke-width="1"/>
+  <text x="610" y="488" text-anchor="middle" font-size="8" fill="#fc6d26">GitLab</text>
+  <!-- Azure DevOps -->
+  <rect x="642" y="476" width="142" height="18" rx="9" fill="#001d3d" stroke="#0078d4" stroke-width="1"/>
+  <text x="713" y="488" text-anchor="middle" font-size="8" fill="#2899f5">Azure DevOps</text>
+
+  <!-- Transport -->
+  <rect x="574" y="512" width="156" height="18" rx="9" fill="#0d1117" fill-opacity="0.7"/>
+  <text x="652" y="524" text-anchor="middle" font-size="8" fill="#4b5563" letter-spacing="0.8">STREAMABLE HTTP · FastMCP</text>
+
+  <!-- ─── RIGHT: outputs ────────────────────────────────────────── -->
+  <!-- Arrows from MCP to right-side cards -->
+  <line x1="806" y1="234" x2="870" y2="196" stroke="#3b82f6" stroke-width="1.5" stroke-opacity="0.55" marker-end="url(#arrow)" stroke-dasharray="4 3"/>
+  <line x1="806" y1="316" x2="870" y2="316" stroke="#10b981" stroke-width="1.5" stroke-opacity="0.55" marker-end="url(#arrow-green)" stroke-dasharray="4 3"/>
+  <line x1="806" y1="400" x2="870" y2="444" stroke="#f59e0b" stroke-width="1.5" stroke-opacity="0.55" marker-end="url(#arrow)" stroke-dasharray="4 3"/>
+
+  <!-- Confluence -->
+  <g filter="url(#shadow)">
+    <rect x="870" y="112" width="196" height="156" rx="10" fill="url(#cardGrad)" stroke="#21262d" stroke-width="1.5"/>
+  </g>
+  <circle cx="968" cy="168" r="28" fill="#0d1f38" stroke="#1d4ed8" stroke-width="1.5"/>
+  <text x="968" y="176" text-anchor="middle" font-size="20" fill="#60a5fa" font-weight="bold">C</text>
+  <text x="968" y="208" text-anchor="middle" font-size="12" fill="#e6edf3">Confluence</text>
+  <text x="968" y="224" text-anchor="middle" font-size="10" fill="#8b949e">Page Properties → CQL</text>
+  <rect x="900" y="238" width="136" height="16" rx="8" fill="#1e40af" fill-opacity="0.4"/>
+  <text x="968" y="249" text-anchor="middle" font-size="8" fill="#93c5fd" letter-spacing="0.5">STRUCTURED CQL SEARCH</text>
+
+  <!-- Git providers card (combined) -->
+  <g filter="url(#shadow)">
+    <rect x="870" y="280" width="196" height="200" rx="10" fill="url(#cardGrad)" stroke="#21262d" stroke-width="1.5"/>
+  </g>
+  <text x="968" y="304" text-anchor="middle" font-size="11" fill="#8b949e">Draft PR / MR</text>
+
+  <!-- GitHub row -->
+  <circle cx="900" cy="330" r="14" fill="#161b22" stroke="#238636" stroke-width="1.2"/>
+  <circle cx="900" cy="328" r="6" fill="#e6edf3"/>
+  <circle cx="896" cy="325" r="2" fill="#0d1117"/>
+  <circle cx="904" cy="325" r="2" fill="#0d1117"/>
+  <path d="M 896 332 Q 900 336 904 332" fill="#0d1117"/>
+  <text x="920" y="328" font-size="10" fill="#e6edf3">GitHub</text>
+  <text x="920" y="340" font-size="8" fill="#6e7681">github.com · GitHub Enterprise</text>
+
+  <!-- GitLab row -->
+  <circle cx="900" cy="372" r="14" fill="#1a0f00" stroke="#fc6d26" stroke-width="1.2"/>
+  <text x="900" y="377" text-anchor="middle" font-size="13" fill="#fc6d26">◈</text>
+  <text x="920" y="370" font-size="10" fill="#e6edf3">GitLab</text>
+  <text x="920" y="382" font-size="8" fill="#6e7681">gitlab.com · self-hosted</text>
+
+  <!-- Azure DevOps row -->
+  <circle cx="900" cy="414" r="14" fill="#001d3d" stroke="#0078d4" stroke-width="1.2"/>
+  <text x="900" y="419" text-anchor="middle" font-size="11" fill="#2899f5">✦</text>
+  <text x="920" y="412" font-size="10" fill="#e6edf3">Azure DevOps</text>
+  <text x="920" y="424" font-size="8" fill="#6e7681">dev.azure.com · ADO Server</text>
+
+  <rect x="900" y="448" width="136" height="16" rx="8" fill="#1f3a1f" fill-opacity="0.7"/>
+  <text x="968" y="459" text-anchor="middle" font-size="8" fill="#3fb950" letter-spacing="0.5">DRAFT PR/MR WITH CHECKLIST</text>
+
+  <!-- K8s badge -->
+  <g filter="url(#shadow)">
+    <rect x="870" y="492" width="196" height="72" rx="10" fill="url(#cardGrad)" stroke="#21262d" stroke-width="1.5"/>
+  </g>
+  <circle cx="910" cy="528" r="18" fill="#1f2937" stroke="#d97706" stroke-width="1.2"/>
+  <circle cx="910" cy="528" r="6" fill="#fbbf24" fill-opacity="0.7"/>
+  <line x1="910" y1="513" x2="910" y2="519" stroke="#fbbf24" stroke-width="1.8"/>
+  <line x1="910" y1="537" x2="910" y2="543" stroke="#fbbf24" stroke-width="1.8"/>
+  <line x1="895" y1="528" x2="901" y2="528" stroke="#fbbf24" stroke-width="1.8"/>
+  <line x1="919" y1="528" x2="925" y2="528" stroke="#fbbf24" stroke-width="1.8"/>
+  <text x="968" y="521" text-anchor="middle" font-size="11" fill="#e6edf3">Kubernetes</text>
+  <text x="968" y="537" text-anchor="middle" font-size="9" fill="#8b949e">platform-tools namespace</text>
+
+  <!-- ─── BOTTOM STRIP ──────────────────────────────────────────── -->
+  <rect x="32" y="590" width="1216" height="1" fill="#21262d"/>
+
+  <g transform="translate(40,607)">
+    <rect width="100" height="20" rx="10" fill="#1f2937"/>
+    <text x="50" y="14" text-anchor="middle" font-size="9" fill="#9ca3af">Python 3.11+</text>
+  </g>
+  <g transform="translate(148,607)">
+    <rect width="80" height="20" rx="10" fill="#1f2937"/>
+    <text x="40" y="14" text-anchor="middle" font-size="9" fill="#9ca3af">FastMCP</text>
+  </g>
+  <g transform="translate(236,607)">
+    <rect width="96" height="20" rx="10" fill="#1f2937"/>
+    <text x="48" y="14" text-anchor="middle" font-size="9" fill="#9ca3af">anthropic SDK</text>
+  </g>
+  <g transform="translate(340,607)">
+    <rect width="80" height="20" rx="10" fill="#1f2937"/>
+    <text x="40" y="14" text-anchor="middle" font-size="9" fill="#9ca3af">openai SDK</text>
+  </g>
+  <g transform="translate(428,607)">
+    <rect width="92" height="20" rx="10" fill="#1f2937"/>
+    <text x="46" y="14" text-anchor="middle" font-size="9" fill="#9ca3af">python-gitlab</text>
+  </g>
+  <g transform="translate(528,607)">
+    <rect width="80" height="20" rx="10" fill="#1f2937"/>
+    <text x="40" y="14" text-anchor="middle" font-size="9" fill="#9ca3af">PyGithub</text>
+  </g>
+  <g transform="translate(616,607)">
+    <rect width="106" height="20" rx="10" fill="#1f2937"/>
+    <text x="53" y="14" text-anchor="middle" font-size="9" fill="#9ca3af">azure-devops</text>
+  </g>
+  <g transform="translate(730,607)">
+    <rect width="122" height="20" rx="10" fill="#1f2937"/>
+    <text x="61" y="14" text-anchor="middle" font-size="9" fill="#9ca3af">atlassian-python-api</text>
+  </g>
+  <g transform="translate(860,607)">
+    <rect width="108" height="20" rx="10" fill="#1f2937"/>
+    <text x="54" y="14" text-anchor="middle" font-size="9" fill="#9ca3af">ExternalSecret</text>
+  </g>
+  <g transform="translate(976,607)">
+    <rect width="118" height="20" rx="10" fill="#0f2238"/>
+    <text x="59" y="14" text-anchor="middle" font-size="9" fill="#60a5fa">Apache 2.0</text>
+  </g>
+  <g transform="translate(1102,607)">
+    <rect width="146" height="20" rx="10" fill="#0f2238"/>
+    <text x="73" y="14" text-anchor="middle" font-size="9" fill="#60a5fa">polarpoint-io</text>
+  </g>
+
+</svg>

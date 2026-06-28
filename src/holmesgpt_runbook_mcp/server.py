@@ -5,19 +5,26 @@ Provides five tools for HolmesGPT (and any Confluence MCP client) to:
   1. Search runbooks by service / failure mode / alert name (CQL, not fuzzy text)
   2. Retrieve full runbook content from Confluence
   3. Classify an investigation log as a runbook gap or not
-  4. Draft a new runbook from investigation logs and open a GitHub PR
+  4. Draft a new runbook from investigation logs and open a PR/MR
   5. Analyse root cause using the runbook knowledge base + live incident data
 
 Transport: streamable HTTP (port 8080) — deploy as a K8s pod alongside HolmesGPT.
 
-Environment variables required:
-  ANTHROPIC_API_KEY        — Claude API key
+LLM provider (LLM_PROVIDER): anthropic | openai | azure | openai-compatible
+  LLM_API_KEY / ANTHROPIC_API_KEY / OPENAI_API_KEY — provider API key
+  LLM_FAST_MODEL    — model for classification (default depends on provider)
+  LLM_CAPABLE_MODEL — model for drafting and RCA
+
+Git provider (GIT_PROVIDER): github | gitlab
+  GIT_TOKEN / GITHUB_TOKEN / GITLAB_TOKEN — personal access token
+  GIT_RUNBOOK_REPO  — org/repo (default: polarpoint-io/markdown-pol-docs)
+  GIT_HOST          — override for self-hosted instances
+
+Confluence:
   CONFLUENCE_URL           — e.g. https://your-org.atlassian.net/wiki
   CONFLUENCE_USERNAME      — Atlassian email
   CONFLUENCE_API_TOKEN     — Atlassian API token
-  GITHUB_TOKEN             — GitHub PAT with repo write access
   CONFLUENCE_RUNBOOK_SPACE — Confluence space key (default: RUNBOOKS)
-  GITHUB_RUNBOOK_REPO      — GitHub repo (default: polarpoint-io/markdown-pol-docs)
 """
 
 from __future__ import annotations
@@ -30,8 +37,8 @@ from mcp.server.fastmcp import FastMCP
 from pydantic import BaseModel, ConfigDict, Field
 
 from . import confluence as cf
-from . import claude_client as ai
-from . import github as gh
+from . import llm_client as ai
+from . import git_provider as gh
 from .templates import render_runbook_template
 
 logging.basicConfig(level=logging.INFO)
@@ -334,9 +341,9 @@ async def investigation_classify(params: InvestigationClassifyInput) -> str:
     """
     Classify a HolmesGPT investigation log to detect runbook gaps.
 
-    Calls Claude Haiku to determine whether Holmes improvised without a
-    matching runbook, and extracts structured gap metadata. Call this on
-    every completed investigation to build up the gap store.
+    Calls the configured fast LLM (LLM_FAST_MODEL) to determine whether Holmes
+    improvised without a matching runbook, and extracts structured gap metadata.
+    Call this on every completed investigation to build up the gap store.
 
     Args:
         params (InvestigationClassifyInput):
@@ -393,12 +400,13 @@ async def runbook_draft(params: RunbookDraftInput) -> str:
     """
     Draft a new runbook from HolmesGPT investigation logs and open a GitHub PR.
 
-    Uses Claude Sonnet to extract diagnosis steps, resolution paths, and
-    escalation details from real investigation logs. The draft is written
-    in the Polarpoint AI-optimised runbook format with confluence_properties
-    frontmatter, then opened as a draft GitHub PR for human review.
+    Uses the configured capable LLM (LLM_CAPABLE_MODEL) to extract diagnosis
+    steps, resolution paths, and escalation details from real investigation
+    logs. The draft is written in the Polarpoint AI-optimised runbook format
+    with confluence_properties frontmatter, then opened as a draft PR/MR
+    (GitHub or GitLab) for human review.
 
-    The PR starts with Status: Draft. A platform engineer must review and
+    The PR/MR starts with Status: Draft. A platform engineer must review and
     change Status to Approved before the runbook is published to Confluence
     (via the MkDocs CI build).
 
@@ -517,9 +525,9 @@ async def root_cause_analyse(params: RootCauseInput) -> str:
     Analyse root cause of an active incident using the runbook knowledge base.
 
     First searches Confluence for runbooks matching the alert and service
-    (using Page Properties CQL), then uses Claude Sonnet to reason over the
-    runbook content + live incident data to identify the most likely root cause
-    and recommend an immediate next step.
+    (using Page Properties CQL), then uses the configured capable LLM
+    (LLM_CAPABLE_MODEL) to reason over the runbook content + live incident
+    data to identify the most likely root cause and recommend a next step.
 
     Call this during an active incident when you have pod logs or events and
     want to determine root cause before deciding whether to escalate.
