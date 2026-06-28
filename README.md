@@ -33,7 +33,7 @@ Holmes finds the exact runbook on the first query instead of ranking 40 pages th
 
 ## Runbook format
 
-Runbooks must use the [Polarpoint AI-optimised runbook format](https://github.com/polarpoint-io/markdown-pol-docs/blob/main/docs/technical-practices/monitoring-observability/runbooks/rb_template_ai_optimized.md) with `confluence_properties` frontmatter. `runbook_draft` generates this format automatically.
+Runbooks must use the [Polarpoint AI-optimised runbook format](docs/runbook-template.md) with `confluence_properties` frontmatter. The template is included in this repo at [`docs/runbook-template.md`](docs/runbook-template.md). `runbook_draft` generates this format automatically.
 
 ## Prerequisites
 
