@@ -1,6 +1,6 @@
 [build-system]
 requires = ["setuptools>=61", "wheel"]
-build-backend = "setuptools.backends.legacy:build"
+build-backend = "setuptools.build_meta"
 
 [project]
 name = "holmesgpt-runbook-mcp"
@@ -91,6 +91,8 @@ fail_under = 30
 [tool.ruff]
 line-length = 100
 target-version = "py311"
+
+[tool.ruff.lint]
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "UP", "N"]
