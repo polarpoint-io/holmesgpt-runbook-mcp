@@ -309,7 +309,9 @@ Return JSON matching this schema exactly:
             "symptom_signals": [f"{alert_name} in Alertmanager"],
             "diagnosis_steps": [],
             "resolution_paths": [],
-            "escalation": [{"severity": "P1", "contact": "@platform-team", "channel": "#platform-alerts"}],
+            "escalation": [
+                {"severity": "P1", "contact": "@platform-team", "channel": "#platform-alerts"}
+            ],
             "references": [],
             "mttr": "TBD",
             "severity": "P1-P2",

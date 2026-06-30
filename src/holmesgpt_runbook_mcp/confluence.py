@@ -104,18 +104,20 @@ def search_runbooks(
         for prop in content.get("metadata", {}).get("properties", {}).get("results", []):
             props[prop.get("key", "")] = prop.get("value", "")
 
-        pages.append({
-            "id": page_id,
-            "title": title,
-            "url": url,
-            "service": props.get("Service", ""),
-            "failure_mode": props.get("Failure-Mode", ""),
-            "alert_name": props.get("Alert-Name", ""),
-            "severity": props.get("Severity", ""),
-            "mttr": props.get("MTTR", ""),
-            "owner": props.get("Owner", ""),
-            "status": props.get("Status", ""),
-        })
+        pages.append(
+            {
+                "id": page_id,
+                "title": title,
+                "url": url,
+                "service": props.get("Service", ""),
+                "failure_mode": props.get("Failure-Mode", ""),
+                "alert_name": props.get("Alert-Name", ""),
+                "severity": props.get("Severity", ""),
+                "mttr": props.get("MTTR", ""),
+                "owner": props.get("Owner", ""),
+                "status": props.get("Status", ""),
+            }
+        )
 
     return pages
 

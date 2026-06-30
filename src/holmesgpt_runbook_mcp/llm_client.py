@@ -76,14 +76,13 @@ def _api_key(env_candidates: list[str]) -> str:
         val = os.environ.get(name, "").strip()
         if val:
             return val
-    raise RuntimeError(
-        f"No API key found. Set one of: {', '.join(env_candidates)}"
-    )
+    raise RuntimeError(f"No API key found. Set one of: {', '.join(env_candidates)}")
 
 
 # ---------------------------------------------------------------------------
 # Abstract base
 # ---------------------------------------------------------------------------
+
 
 class _LLMClient(ABC):
     """Minimal interface used throughout this package."""
@@ -104,9 +103,11 @@ class _LLMClient(ABC):
 # Anthropic implementation
 # ---------------------------------------------------------------------------
 
+
 class _AnthropicClient(_LLMClient):
     def __init__(self) -> None:
         import anthropic  # noqa: PLC0415  (lazy import)
+
         key = _api_key(["LLM_API_KEY", "ANTHROPIC_API_KEY"])
         self._client = anthropic.Anthropic(api_key=key)
 
@@ -124,8 +125,11 @@ class _AnthropicClient(_LLMClient):
 # OpenAI implementation (also covers openai-compatible and azure)
 # ---------------------------------------------------------------------------
 
+
 class _OpenAIClient(_LLMClient):
-    def __init__(self, *, base_url: Optional[str] = None, api_version: Optional[str] = None) -> None:
+    def __init__(
+        self, *, base_url: Optional[str] = None, api_version: Optional[str] = None
+    ) -> None:
         import openai  # noqa: PLC0415
 
         key = _api_key(["LLM_API_KEY", "OPENAI_API_KEY", "AZURE_OPENAI_API_KEY"])
@@ -288,6 +292,7 @@ DRAFT_SCHEMA = """\
 # Public API — same signatures as the old claude_client module
 # ---------------------------------------------------------------------------
 
+
 def classify_investigation(
     investigation_log: str,
     alert_name: Optional[str] = None,
@@ -442,7 +447,9 @@ Return JSON matching this schema exactly:
             "symptom_signals": [f"{alert_name} in Alertmanager"],
             "diagnosis_steps": [],
             "resolution_paths": [],
-            "escalation": [{"severity": "P1", "contact": "@platform-team", "channel": "#platform-alerts"}],
+            "escalation": [
+                {"severity": "P1", "contact": "@platform-team", "channel": "#platform-alerts"}
+            ],
             "references": [],
             "mttr": "TBD",
             "severity": "P1-P2",

@@ -58,6 +58,7 @@ mcp = FastMCP(
 # Input models
 # ---------------------------------------------------------------------------
 
+
 class RunbookSearchInput(BaseModel):
     model_config = ConfigDict(str_strip_whitespace=True, extra="forbid")
 
@@ -188,6 +189,7 @@ class RootCauseInput(BaseModel):
 # Tool 1: runbook_search
 # ---------------------------------------------------------------------------
 
+
 @mcp.tool(
     name="runbook_search",
     annotations={
@@ -245,24 +247,30 @@ async def runbook_search(params: RunbookSearchInput) -> str:
         )
         if not results:
             query_parts = [
-                p for p in [
+                p
+                for p in [
                     f"service={params.service}" if params.service else None,
                     f"failure_mode={params.failure_mode}" if params.failure_mode else None,
                     f"alert_name={params.alert_name}" if params.alert_name else None,
                 ]
                 if p
             ]
-            return json.dumps({
-                "found": 0,
-                "message": f"No approved runbooks found for {', '.join(query_parts) or 'the given criteria'}. "
-                           "Consider calling runbook_draft to create one.",
-                "runbooks": [],
-            })
+            return json.dumps(
+                {
+                    "found": 0,
+                    "message": f"No approved runbooks found for {', '.join(query_parts) or 'the given criteria'}. "
+                    "Consider calling runbook_draft to create one.",
+                    "runbooks": [],
+                }
+            )
 
-        return json.dumps({
-            "found": len(results),
-            "runbooks": results,
-        }, indent=2)
+        return json.dumps(
+            {
+                "found": len(results),
+                "runbooks": results,
+            },
+            indent=2,
+        )
 
     except Exception as exc:
         logger.exception("runbook_search failed")
@@ -272,6 +280,7 @@ async def runbook_search(params: RunbookSearchInput) -> str:
 # ---------------------------------------------------------------------------
 # Tool 2: runbook_get
 # ---------------------------------------------------------------------------
+
 
 @mcp.tool(
     name="runbook_get",
@@ -327,6 +336,7 @@ async def runbook_get(params: RunbookGetInput) -> str:
 # Tool 3: investigation_classify
 # ---------------------------------------------------------------------------
 
+
 @mcp.tool(
     name="investigation_classify",
     annotations={
@@ -375,16 +385,19 @@ async def investigation_classify(params: InvestigationClassifyInput) -> str:
         return json.dumps(result, indent=2)
     except Exception as exc:
         logger.exception("investigation_classify failed")
-        return json.dumps({
-            "has_gap": False,
-            "confidence": "low",
-            "error": f"Classification failed: {exc}",
-        })
+        return json.dumps(
+            {
+                "has_gap": False,
+                "confidence": "low",
+                "error": f"Classification failed: {exc}",
+            }
+        )
 
 
 # ---------------------------------------------------------------------------
 # Tool 4: runbook_draft
 # ---------------------------------------------------------------------------
+
 
 @mcp.tool(
     name="runbook_draft",
@@ -441,7 +454,9 @@ async def runbook_draft(params: RunbookDraftInput) -> str:
     """
     try:
         # Check for an existing runbook to use as cross-link context
-        existing = cf.search_runbooks(service=params.service, failure_mode=params.failure_mode, limit=1)
+        existing = cf.search_runbooks(
+            service=params.service, failure_mode=params.failure_mode, limit=1
+        )
         existing_context = None
         if existing:
             try:
@@ -492,14 +507,17 @@ async def runbook_draft(params: RunbookDraftInput) -> str:
             priority=params.priority,
         )
 
-        return json.dumps({
-            "pr_url": pr_result["pr_url"],
-            "pr_number": pr_result["pr_number"],
-            "branch_name": pr_result["branch_name"],
-            "file_path": pr_result["file_path"],
-            "runbook_title": draft_data.get("title"),
-            "draft_preview": runbook_md[:500] + "...",
-        }, indent=2)
+        return json.dumps(
+            {
+                "pr_url": pr_result["pr_url"],
+                "pr_number": pr_result["pr_number"],
+                "branch_name": pr_result["branch_name"],
+                "file_path": pr_result["file_path"],
+                "runbook_title": draft_data.get("title"),
+                "draft_preview": runbook_md[:500] + "...",
+            },
+            indent=2,
+        )
 
     except Exception as exc:
         logger.exception("runbook_draft failed")
@@ -509,6 +527,7 @@ async def runbook_draft(params: RunbookDraftInput) -> str:
 # ---------------------------------------------------------------------------
 # Tool 5: root_cause_analyse
 # ---------------------------------------------------------------------------
+
 
 @mcp.tool(
     name="root_cause_analyse",
@@ -589,22 +608,23 @@ async def root_cause_analyse(params: RootCauseInput) -> str:
         # Enrich matching_runbooks with URLs from our Confluence search
         if runbook_context:
             result["matching_runbooks"] = [
-                {"title": rb["title"], "url": rb["url"]}
-                for rb in runbook_context
+                {"title": rb["title"], "url": rb["url"]} for rb in runbook_context
             ]
 
         return json.dumps(result, indent=2)
 
     except Exception as exc:
         logger.exception("root_cause_analyse failed")
-        return json.dumps({
-            "most_likely_cause": "Analysis failed — check logs manually",
-            "confidence": "low",
-            "reasoning": str(exc),
-            "recommended_action": "kubectl describe pod -n <namespace> <pod-name>",
-            "escalate_immediately": False,
-            "matching_runbooks": [],
-        })
+        return json.dumps(
+            {
+                "most_likely_cause": "Analysis failed — check logs manually",
+                "confidence": "low",
+                "reasoning": str(exc),
+                "recommended_action": "kubectl describe pod -n <namespace> <pod-name>",
+                "escalate_immediately": False,
+                "matching_runbooks": [],
+            }
+        )
 
 
 # ---------------------------------------------------------------------------

@@ -118,6 +118,7 @@ The investigation logs that generated this are in `#holmes-investigations`.
 # Abstract base
 # ---------------------------------------------------------------------------
 
+
 class _GitProvider(ABC):
     @abstractmethod
     def open_pr(
@@ -140,13 +141,16 @@ class _GitProvider(ABC):
 # GitHub implementation
 # ---------------------------------------------------------------------------
 
+
 class _GitHubProvider(_GitProvider):
     def __init__(self) -> None:
         from github import Github  # noqa: PLC0415
+
         token = _token(["GIT_TOKEN", "GITHUB_TOKEN"])
         host = os.environ.get("GIT_HOST", "").strip()
         if host:
             from github import Github as GH, Auth  # noqa: PLC0415
+
             self._gh = GH(auth=Auth.Token(token), base_url=f"https://{host.rstrip('/')}/api/v3")
         else:
             self._gh = Github(token)
@@ -232,9 +236,11 @@ class _GitHubProvider(_GitProvider):
 # GitLab implementation
 # ---------------------------------------------------------------------------
 
+
 class _GitLabProvider(_GitProvider):
     def __init__(self) -> None:
         import gitlab  # noqa: PLC0415
+
         token = _token(["GIT_TOKEN", "GITLAB_TOKEN"])
         host = os.environ.get("GIT_HOST", "https://gitlab.com").strip()
         self._gl = gitlab.Gitlab(url=host, private_token=token)
@@ -274,12 +280,14 @@ class _GitLabProvider(_GitProvider):
             f.encoding = "text"
             f.save(branch=branch_name, commit_message=f"draft(runbook): update {title}")
         except Exception:
-            project.files.create({
-                "file_path": file_path,
-                "branch": branch_name,
-                "content": final_markdown,
-                "commit_message": f"draft(runbook): {title} [{source_count} incidents]",
-            })
+            project.files.create(
+                {
+                    "file_path": file_path,
+                    "branch": branch_name,
+                    "content": final_markdown,
+                    "commit_message": f"draft(runbook): {title} [{source_count} incidents]",
+                }
+            )
 
         # Open MR (idempotent)
         existing_mrs = project.mergerequests.list(
@@ -290,19 +298,21 @@ class _GitLabProvider(_GitProvider):
         if existing_mrs:
             mr = existing_mrs[0]
         else:
-            mr = project.mergerequests.create({
-                "source_branch": branch_name,
-                "target_branch": BASE_BRANCH,
-                "title": f"Draft: [Runbook Draft] {title}",
-                "description": _pr_body(
-                    title=title,
-                    service=service,
-                    failure_mode=failure_mode,
-                    source_count=source_count,
-                    priority=priority,
-                ),
-                "draft": True,
-            })
+            mr = project.mergerequests.create(
+                {
+                    "source_branch": branch_name,
+                    "target_branch": BASE_BRANCH,
+                    "title": f"Draft: [Runbook Draft] {title}",
+                    "description": _pr_body(
+                        title=title,
+                        service=service,
+                        failure_mode=failure_mode,
+                        source_count=source_count,
+                        priority=priority,
+                    ),
+                    "draft": True,
+                }
+            )
 
         return {
             "pr_url": mr.web_url,
@@ -315,6 +325,7 @@ class _GitLabProvider(_GitProvider):
 # ---------------------------------------------------------------------------
 # Azure DevOps implementation
 # ---------------------------------------------------------------------------
+
 
 class _AzureDevOpsProvider(_GitProvider):
     """
@@ -397,9 +408,11 @@ class _AzureDevOpsProvider(_GitProvider):
             ref_updates=[
                 GitRefUpdate(
                     name=f"refs/heads/{branch_name}",
-                    old_object_id="0000000000000000000000000000000000000000"
-                    if not existing_refs
-                    else new_branch_sha,
+                    old_object_id=(
+                        "0000000000000000000000000000000000000000"
+                        if not existing_refs
+                        else new_branch_sha
+                    ),
                     new_object_id=None,  # filled by commit
                 )
             ],

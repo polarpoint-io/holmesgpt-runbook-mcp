@@ -47,7 +47,11 @@ def render_runbook_template(
     diagnosis_steps = diagnosis_steps or []
     resolution_paths = resolution_paths or []
     escalation = escalation or [
-        {"severity": "P1 — service down", "contact": "@platform-oncall", "channel": "#incidents-production"},
+        {
+            "severity": "P1 — service down",
+            "contact": "@platform-oncall",
+            "channel": "#incidents-production",
+        },
         {"severity": "P2 — degraded", "contact": "@platform-team", "channel": "#platform-alerts"},
     ]
     references = references or []
@@ -94,8 +98,7 @@ def render_runbook_template(
 
     # Build escalation table
     esc_rows = "\n".join(
-        f"| {e['severity']} | `{e['contact']}` | `{e['channel']}` |"
-        for e in escalation
+        f"| {e['severity']} | `{e['contact']}` | `{e['channel']}` |" for e in escalation
     )
 
     # Build references
