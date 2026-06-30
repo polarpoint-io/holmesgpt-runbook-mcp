@@ -9,17 +9,24 @@ from atlassian import Confluence
 
 logger = logging.getLogger(__name__)
 
-CONFLUENCE_URL = os.environ["CONFLUENCE_URL"]          # e.g. https://your-org.atlassian.net/wiki
-CONFLUENCE_USER = os.environ["CONFLUENCE_USERNAME"]
-CONFLUENCE_TOKEN = os.environ["CONFLUENCE_API_TOKEN"]
-CONFLUENCE_SPACE = os.environ.get("CONFLUENCE_RUNBOOK_SPACE", "RUNBOOKS")
+# Read lazily so the module can be imported without Confluence credentials set
+# (e.g. in CI unit tests that only test build_cql / templates).
+_SPACE_DEFAULT = "RUNBOOKS"
+
+
+def _conf_url() -> str:
+    return os.environ["CONFLUENCE_URL"]
+
+
+def _conf_space() -> str:
+    return os.environ.get("CONFLUENCE_RUNBOOK_SPACE", _SPACE_DEFAULT)
 
 
 def _client() -> Confluence:
     return Confluence(
-        url=CONFLUENCE_URL,
-        username=CONFLUENCE_USER,
-        password=CONFLUENCE_TOKEN,
+        url=os.environ["CONFLUENCE_URL"],
+        username=os.environ["CONFLUENCE_USERNAME"],
+        password=os.environ["CONFLUENCE_API_TOKEN"],
         cloud=True,
     )
 
@@ -33,9 +40,10 @@ def build_cql(
     space: Optional[str] = None,
 ) -> str:
     """Build a CQL query using Confluence Page Properties set by the MkDocs plugin."""
+    effective_space = space or os.environ.get("CONFLUENCE_RUNBOOK_SPACE", _SPACE_DEFAULT)
     clauses = [
         "type=page",
-        f'space="{space or CONFLUENCE_SPACE}"',
+        f'space="{effective_space}"',
         'label="runbook"',
     ]
     if service:
@@ -73,6 +81,7 @@ def search_runbooks(
     )
     logger.info("Confluence CQL: %s", cql)
 
+    effective_space = space or _conf_space()
     client = _client()
     try:
         results = client.cql(
@@ -89,9 +98,8 @@ def search_runbooks(
         content = r.get("content", {})
         page_id = content.get("id", "")
         title = content.get("title", "")
-        url = f"{CONFLUENCE_URL}/wiki/spaces/{space or CONFLUENCE_SPACE}/pages/{page_id}"
+        url = f"{_conf_url()}/wiki/spaces/{effective_space}/pages/{page_id}"
 
-        # Extract page properties from metadata
         props: dict = {}
         for prop in content.get("metadata", {}).get("properties", {}).get("results", []):
             props[prop.get("key", "")] = prop.get("value", "")
@@ -129,9 +137,8 @@ def get_runbook_content(page_id: str) -> dict:
         raise
 
     title = page.get("title", "")
-    url = f"{CONFLUENCE_URL}/wiki/spaces/{CONFLUENCE_SPACE}/pages/{page_id}"
+    url = f"{_conf_url()}/wiki/spaces/{_conf_space()}/pages/{page_id}"
 
-    # body.storage is Confluence XML; return as-is — Holmes reads it natively
     body = page.get("body", {}).get("storage", {}).get("value", "")
 
     props: dict = {}
@@ -152,7 +159,7 @@ def find_page_by_title(title: str, space: Optional[str] = None) -> Optional[dict
     client = _client()
     try:
         page = client.get_page_by_title(
-            space=space or CONFLUENCE_SPACE,
+            space=space or _conf_space(),
             title=title,
             expand="metadata.properties",
         )

@@ -91,8 +91,10 @@ fail_under = 30
 [tool.ruff]
 line-length = 100
 target-version = "py311"
-select = ["E", "F", "I", "UP", "N", "ANN"]
-ignore = ["ANN101", "ANN102"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "N"]
+ignore = []
 
 [tool.black]
 line-length = 100
