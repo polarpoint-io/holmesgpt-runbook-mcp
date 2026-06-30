@@ -1,6 +1,5 @@
 """Tests for Confluence client — CQL building and response parsing."""
 
-import pytest
 from holmesgpt_runbook_mcp.confluence import build_cql
 
 

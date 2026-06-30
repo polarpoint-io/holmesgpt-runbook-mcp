@@ -1,6 +1,5 @@
 """Tests for runbook template rendering."""
 
-import pytest
 from holmesgpt_runbook_mcp.templates import render_runbook_template
 
 

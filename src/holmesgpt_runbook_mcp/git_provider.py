@@ -357,7 +357,6 @@ class _AzureDevOpsProvider(_GitProvider):
             ItemContent,
             GitChange,
             GitPullRequest,
-            GitPullRequestCompletionOptions,
         )
 
         project_name, repo_name = _split_repo(RUNBOOK_REPO, 2, "azure-devops")
