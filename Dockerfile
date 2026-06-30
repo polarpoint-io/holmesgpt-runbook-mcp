@@ -2,14 +2,11 @@ FROM python:3.12-slim
 
 WORKDIR /app
 
-# Install dependencies first (cache layer)
-COPY pyproject.toml .
-RUN pip install --no-cache-dir ".[cli]" 2>/dev/null || pip install --no-cache-dir .
-
-# Copy source
+# Copy pyproject.toml and src together so pip install can find the package
+COPY pyproject.toml ./
 COPY src/ ./src/
 
-RUN pip install --no-cache-dir -e . --no-deps
+RUN pip install --no-cache-dir .
 
 # Non-root user
 RUN useradd -m -u 1000 mcp && chown -R mcp:mcp /app
