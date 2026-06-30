@@ -34,21 +34,21 @@ openai    = ["openai>=1.30.0"]
 # Git providers — install at least one
 github       = ["PyGithub>=2.1.0"]
 gitlab       = ["python-gitlab>=4.0.0"]
-azure-devops = ["azure-devops>=7.1.0", "msrest>=0.7.0"]
+azure-devops = ["azure-devops>=7.1.0b1", "msrest>=0.7.0"]
 
 # Convenience bundles
 anthropic-github       = ["anthropic>=0.40.0", "PyGithub>=2.1.0"]
 openai-github          = ["openai>=1.30.0", "PyGithub>=2.1.0"]
 anthropic-gitlab       = ["anthropic>=0.40.0", "python-gitlab>=4.0.0"]
 openai-gitlab          = ["openai>=1.30.0", "python-gitlab>=4.0.0"]
-anthropic-azure-devops = ["anthropic>=0.40.0", "azure-devops>=7.1.0", "msrest>=0.7.0"]
-openai-azure-devops    = ["openai>=1.30.0", "azure-devops>=7.1.0", "msrest>=0.7.0"]
+anthropic-azure-devops = ["anthropic>=0.40.0", "azure-devops>=7.1.0b1", "msrest>=0.7.0"]
+openai-azure-devops    = ["openai>=1.30.0", "azure-devops>=7.1.0b1", "msrest>=0.7.0"]
 all = [
     "anthropic>=0.40.0",
     "openai>=1.30.0",
     "PyGithub>=2.1.0",
     "python-gitlab>=4.0.0",
-    "azure-devops>=7.1.0",
+    "azure-devops>=7.1.0b1",
     "msrest>=0.7.0",
 ]
 
@@ -65,7 +65,7 @@ dev = [
     "openai>=1.30.0",
     "PyGithub>=2.1.0",
     "python-gitlab>=4.0.0",
-    "azure-devops>=7.1.0",
+    "azure-devops>=7.1.0b1",
     "msrest>=0.7.0",
 ]
 
